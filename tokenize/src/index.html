@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en"><head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Node-RED UI Builder - VueJS + bootstrap-vue default template</title>
+	<meta name="description" content="Node-RED UI Builder - VueJS + bootstrap-vue default template">
+
+	<link rel="icon" href="./images/node-blue.ico">
+
+	<link type="text/css" rel="stylesheet" href="../uibuilder/vendor/bootstrap/dist/css/bootstrap.min.css" />
+	<link type="text/css" rel="stylesheet" href="../uibuilder/vendor/bootstrap-vue/dist/bootstrap-vue.css" />
+	<!-- Your own CSS -->
+	<link type="text/css" rel="stylesheet" href="./index.css" media="all">
+	<link type="text/css" rel="stylesheet" href="/unpkg/tabulator.min.css" />
+	<script type="text/javascript" src="/unpkg/tabulator.min.js"></script>
+
+
+</head>
+<body>
+	<div id="app" v-cloak>
+		<b-container id="app_container">
+
+			<b-sidebar id="example-sidebar" title="Menu" shadow>
+				<div class="px-2 py-2">
+					<b-button block variant="outline-primary" v-for="item in menu" v-bind:key="item.idx" :href="item.href">{{item.text}}</b-button>
+				</div>
+			</b-sidebar>
+
+			<div class="mb-3">
+				<h1>
+				<b-button v-b-toggle href="#example-sidebar" @click.prevent>
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+					</svg>
+				</b-button>
+				Tokenization Toolkit</h1>
+			</div>
+			
+			<b-card>
+			</b-card>
+
+			<br>
+		</b-container>
+	</div>
+
+	<!-- These MUST be in the right order. Note no leading / -->
+
+	<!-- REQUIRED: Socket.IO is loaded only once for all instances. Without this, you don't get a websocket connection -->
+	<script src="../uibuilder/vendor/socket.io/socket.io.js"></script>
+
+	<!-- Vendor Libraries - Load in the right order, use minified, production versions for speed -->
+	<script src="../uibuilder/vendor/vue/dist/vue.js"></script> <!-- dev version with component compiler -->
+	<!-- <script src="../uibuilder/vendor/vue/dist/vue.min.js"></script>   prod version with component compiler -->
+	<!-- <script src="../uibuilder/vendor/vue/dist/vue.runtime.min.js"></script>   prod version without component compiler -->
+	<script src="../uibuilder/vendor/bootstrap-vue/dist/bootstrap-vue.js"></script> <!-- Dev version -->
+	<!-- <script src="../uibuilder/vendor/bootstrap-vue/dist/bootstrap-vue.min.js"></script>   Prod version -->
+
+	<!-- REQUIRED: Sets up Socket listeners and the msg object -->
+	<script src="./uibuilderfe.js"></script> <!-- dev version -->
+	<!-- <script src="./uibuilderfe.min.js"></script>	 prod version -->
+
+	<!-- OPTIONAL: You probably want this. Put your custom code here -->
+	<script src="./index.js"></script>
+
+</body></html>

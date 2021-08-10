@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en"><head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Node-RED UI Builder - VueJS + bootstrap-vue default template</title>
+	<meta name="description" content="Node-RED UI Builder - VueJS + bootstrap-vue default template">
+
+	<link rel="icon" href="./images/node-blue.ico">
+
+	<link type="text/css" rel="stylesheet" href="../uibuilder/vendor/bootstrap/dist/css/bootstrap.min.css" />
+	<link type="text/css" rel="stylesheet" href="../uibuilder/vendor/bootstrap-vue/dist/bootstrap-vue.css" />
+	<!-- Your own CSS -->
+	<link type="text/css" rel="stylesheet" href="./index.css" media="all">
+	<link type="text/css" rel="stylesheet" href="/unpkg/tabulator.min.css" />
+	<script type="text/javascript" src="/unpkg/tabulator.min.js"></script>
+
+	<!--
+	//bad
+	<script type="text/javascript" src="/js/blockly.min.js"></script>
+	<script type="text/javascript" src="/js/blockly_compressed.js"></script>
+	//good
+	<script type="text/javascript" src="/JSONLogic-Editor/blockly_compressed.js"></script>
+	-->
+	<script type="text/javascript" src="/JSONLogic-Editor/blockly_compressed.js"></script>
+
+	<!-- context menu in English: -->
+	<script type="text/javascript" src="/JSONLogic-Editor/msg/js/en.js"></script>
+
+	<!-- a simple yet very practical widget: -->
+	<script type="text/javascript" src="/JSONLogic-Editor/field_textbutton.js"></script>
+
+	<!-- override/extend some Blockly code (menu-based building code): -->
+	<script type="text/javascript" src="/JSONLogic-Editor/menuly_override.js"></script>
+
+	<!-- blocks to build JSON structures from: -->
+	<script type="text/javascript" src="/JSONLogic-Editor/menuly_blocks.js"></script>
+
+	<!-- transforming a blockly diagram into a JSON string: -->
+	<script type="text/javascript" src="/JSONLogic-Editor/menuly_codegen.js"></script>
+
+	<!-- building a blockly diagram from a JSON string: -->
+	<script type="text/javascript" src="/JSONLogic-Editor/menuly_2blocks.js"></script>
+
+</head>
+<body>
+	<div id="app" v-cloak>
+		<b-container id="app_container" style="display:flex; flex-direction:column; height:98vh">
+
+			<b-sidebar id="example-sidebar" title="Menu" shadow>
+				<div class="px-2 py-2">
+					<b-button block variant="outline-primary" v-for="item in menu" v-bind:key="item.idx" :href="item.href">{{item.text}}</b-button>
+				</div>
+			</b-sidebar>
+
+			<div class="mb-3">
+				<h1>
+				<b-button v-b-toggle href="#example-sidebar" @click.prevent>
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+					</svg>
+				</b-button>
+				JSON Logic</h1>
+			</div>
+			<!-- working
+			<div style="flex-grow:1" id="blocklyArea">
+				<div id="blocklyDiv">
+				</div>
+			</div>
+			-->
+			<div style="flex-grow:1; display:flex; flex-direction:row;">
+				<div style="flex-grow:1" id="blocklyArea">
+					<div id="blocklyDiv">
+					</div>
+				</div>
+				<div style="display:flex; flex-direction:column; max-width:250px">
+					<div style="display:flex flex-direction:column;">
+                        <b-form-select v-model="cat" style="display:flex; max-width:250px" v-on:change="switchCat($event)">
+                            <template #first>
+                                <b-form-select-option :value="null" disabled>-- Please select a category --</b-form-select-option>
+                            </template>
+                            <template v-for="rec in catList">
+                                <option :value="rec.category">{{rec.category}}</option>
+                            </template>
+                        </b-form-select>
+
+						<b-form-input id="logic_name" style="display:flex" type="text" v-model="logic_name" placeholder="Rule Name">{{ logic_name }}</b-form-input>
+						<b-form-input id="logic_desc" style="display:flex" type="text" v-model="logic_desc" placeholder="Rule Description">{{ logic_desc }}</b-form-input>
+						<b-button variant="primary" v-on:click="saveRule()">Save Rule</b-button>
+						<div id="logic-table"></div>
+						<b-button variant="primary" v-on:click="interpretJSONarea()">Translate JSON below to blocks</b-button>
+					</div>
+					<div style="flex-grow:1; display:flex">
+						<b-form-textarea id=logic_area v-model="logic_area" style="height: 100%; width: 100%">{{ logic_area }}</b-form-textarea>
+					</div>
+				</div>
+			</div>
+			
+		</b-container>
+
+	</div>
+
+    <xml id="toolbox" style="display: none" v-pre>
+
+        <category name="Input" colour="210" >
+            <block type="var"></block>
+            <block type="dictionary"></block>
+            <block type="array"></block>
+            <block type="number"></block>
+            <block type="string"></block>
+            <block type= "true_false"></block>
+        </category>
+
+        <category name="Logic" colour="120">
+            <block type= "if_logic"></block>
+            <block type= "logical"></block>
+            <block type= "not"></block>
+
+        </category>
+        <category name="Boolean" colour="290">
+            <block type= "boolean"></block>
+        </category>
+
+        <category name="Numeric" colour="150">
+            <block type= "comparison"></block>
+            <block type= "minmax"></block>
+            <block type= "between"></block>
+            <block type= "arithmatic"></block>
+        </category>
+
+        <category name="Array" colour="330">
+            <block type= "map_filter"></block>
+            <block type= "merge"></block>
+            <block type= "InMiss"></block>
+
+
+        </category>
+
+        <category name="String" colour="20">
+            <block type="inString"></block>
+            <block type="catString"></block>
+            <block type="subStr"></block>
+            <block type="log"></block>
+        </caetgory>
+
+        <!---->
+    </xml>
+
+
+	<!-- These MUST be in the right order. Note no leading / -->
+
+	<!-- REQUIRED: Socket.IO is loaded only once for all instances. Without this, you don't get a websocket connection -->
+	<script src="../uibuilder/vendor/socket.io/socket.io.js"></script>
+
+	<!-- Vendor Libraries - Load in the right order, use minified, production versions for speed -->
+	<script src="../uibuilder/vendor/vue/dist/vue.js"></script> <!-- dev version with component compiler -->
+	<!-- <script src="../uibuilder/vendor/vue/dist/vue.min.js"></script>   prod version with component compiler -->
+	<!-- <script src="../uibuilder/vendor/vue/dist/vue.runtime.min.js"></script>   prod version without component compiler -->
+	<script src="../uibuilder/vendor/bootstrap-vue/dist/bootstrap-vue.js"></script> <!-- Dev version -->
+	<!-- <script src="../uibuilder/vendor/bootstrap-vue/dist/bootstrap-vue.min.js"></script>   Prod version -->
+
+	<!-- REQUIRED: Sets up Socket listeners and the msg object -->
+	<script src="./uibuilderfe.js"></script> <!-- dev version -->
+	<!-- <script src="./uibuilderfe.min.js"></script>	 prod version -->
+
+	<!-- OPTIONAL: You probably want this. Put your custom code here -->
+	<script src="./jsonlogic.js"></script>
+</body></html>

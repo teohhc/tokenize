@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Node-RED UI Builder - VueJS + bootstrap-vue default template</title>
+	<meta name="description" content="Node-RED UI Builder - VueJS + bootstrap-vue default template">
+
+	<link rel="icon" href="./images/node-blue.ico"/>
+
+	<link type="text/css" rel="stylesheet" href="../uibuilder/vendor/bootstrap/dist/css/bootstrap.min.css" />
+	<link type="text/css" rel="stylesheet" href="../uibuilder/vendor/bootstrap-vue/dist/bootstrap-vue.css" />
+	<!-- Your own CSS -->
+	<link type="text/css" rel="stylesheet" href="./index.css" media="all"/>
+	<link type="text/css" rel="stylesheet" href="/unpkg/tabulator.min.css"/>
+	<link type="text/css" rel="stylesheet" href="/css/drawflow.min.css"/>
+	<link type="text/css" rel="stylesheet" href="/css/mydrawflow.css"/>
+	<script type="text/javascript" src="/unpkg/tabulator.min.js"></script>
+	<!--
+	<script type="text/javascript" src="/js/drawflow.js"></script>
+	-->
+	<script type="text/javascript" src="/js/drawflow.min.js"></script>
+
+</head>
+<body>
+
+	<div id="app" v-cloak>
+		<b-container id="app_container">
+
+			<b-sidebar id="example-sidebar" title="Menu" shadow>
+				<div class="px-2 py-2">
+					<b-button block variant="outline-primary" v-for="item in menu" v-bind:key="item.idx" :href="item.href">{{item.text}}</b-button>
+				</div>
+			</b-sidebar>
+
+			<div class="mb-3">
+				<h1>
+					<b-button v-b-toggle href="#example-sidebar" @click.prevent>
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+							<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
+						</svg>
+					</b-button>
+				Discovery</h1>
+			</div>
+			
+			<br>
+
+			<b-card>
+				<h3 slot="header">Dictionary Selection</h3>
+				<div>
+					<b-form-group label="Language dictionary to be stored into:" v-slot="{ ariaDescribedby }">
+						<b-form-checkbox-group
+							id="checkbox-group-1"
+							v-model="lang"
+							:options="language"
+							:aria-describedby="ariaDescribedby"
+							name="flavour-1">
+						</b-form-checkbox-group>
+					</b-form-group>
+					<div>
+						<p class="mt-1 pb-3">
+							<b-button id="readDicList" pill variant="primary" v-on:click="doReadDicList()">Load Dictionary List</b-button>
+						</p>
+					</div>
+				</div>
+			</b-card>
+
+			<br>
+
+			<b-card>
+				<h3 slot="header">Dictionary Selection</h3>
+
+				<p>
+					<div id="doc-table"></div>
+				</p>
+			</b-card>
+
+			<br>
+
+			<b-card>
+				<h3 slot="header">Rules to Apply</h3>
+				<div>
+					<b-tabs v-model="dfTabs">
+						<b-tab 
+							v-for="item in dfList"
+							v-bind:key="item.title"
+							:title="item.title">
+							<b-form-input style="display:flex; max-width:250px" type="text" v-model="item.name" :placeholder="item.placeholder[0]">{{item.name}}</b-form-input>
+							<b-form-input style="display:flex;" type="text" v-model="item.desc" :placeholder="item.placeholder[1]">{{item.desc}}</b-form-input>
+							<div :id="item.table"></div>
+						</b-tab>
+					</b-tabs>
+				</div>
+				<br>
+				<div style="display:flex; flex-direction:row;">
+					<div class="col-df">
+						<b-tabs ref="toolpanelref" v-model="toolpanel">
+							<b-tab id="Flow" title="Flow">
+								<div class="drag-drawflow" 
+									draggable="true" 
+									@dragstart="drag($event, item)" 
+									@touchstart="drag($event, item)" 
+									@touchmove="positionMobile($event)" 
+									@touchend="drop($event, item)" 
+									:data-node="JSON.stringify(item)"
+									v-for="item in jFlowList" v-bind:key="item.id">
+									<div class="drag-box">
+										<div class="drag-id">{{item.id}}
+											<span class="tooltiptext">{{item.name}}</span>
+										</div>
+										<span class="drag-title">{{item.name}}</span>
+									</div>
+								</div>
+							</b-tab>
+							<b-tab id="Rules" title="Rules">
+								<div class="drag-drawflow" 
+									draggable="true" 
+									@dragstart="drag($event, item)" 
+									@touchstart="drag($event, item)" 
+									@touchmove="positionMobile($event)" 
+									@touchend="drop($event, item)" 
+									:data-node="JSON.stringify(item)"
+									v-for="item in jLogicList" v-bind:key="item.id">
+									<div class="drag-box">
+										<div class="drag-id">{{item.id}}
+											<span class="tooltiptext">{{item.name}}</span>
+										</div>
+										<span class="drag-title">{{item.name}}</span>
+									</div>
+								</div>
+							</b-tab>
+						</b-tabs>
+					</div>
+					<div style="display:flex; flex-grow:1; flex-direction:column;">
+						<div>
+							<b-nav tabs>
+								<b-nav-item 
+									v-for="item in dfMenu"
+									v-bind:key="item.title"
+									v-on:click="changeModule($event, item)" :active="item.active">{{item.title}}</b-nav-item>
+							</b-nav>
+						</div>
+						<div id="drawflow" 
+							@drop="drop($event)" 
+							@dragover.prevent
+							@dragenter.prevent>
+							<b-button class="btn-clear" onclick="app.editor.clearModuleSelected()">Clear</b-button>
+							<b-button class="btn-save" onclick="app.save()">Save</b-button>
+							<div class="bar-zoom" style="height: 40px;">
+								<svg class="svg-inline--fa fa-search-minus fa-w-16" onclick="app.editor.zoom_out()" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search-minus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M304 192v32c0 6.6-5.4 12-12 12H124c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h168c6.6 0 12 5.4 12 12zm201 284.7L476.7 505c-9.4 9.4-24.6 9.4-33.9 0L343 405.3c-4.5-4.5-7-10.6-7-17V372c-35.3 27.6-79.7 44-128 44C93.1 416 0 322.9 0 208S93.1 0 208 0s208 93.1 208 208c0 48.3-16.4 92.7-44 128h16.3c6.4 0 12.5 2.5 17 7l99.7 99.7c9.3 9.4 9.3 24.6 0 34zM344 208c0-75.2-60.8-136-136-136S72 132.8 72 208s60.8 136 136 136 136-60.8 136-136z"></path></svg>
+								<svg class="svg-inline--fa fa-search fa-w-16" onclick="app.editor.zoom_reset()" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M505 442.7L405.3 343c-4.5-4.5-10.6-7-17-7H372c27.6-35.3 44-79.7 44-128C416 93.1 322.9 0 208 0S0 93.1 0 208s93.1 208 208 208c48.3 0 92.7-16.4 128-44v16.3c0 6.4 2.5 12.5 7 17l99.7 99.7c9.4 9.4 24.6 9.4 33.9 0l28.3-28.3c9.4-9.4 9.4-24.6.1-34zM208 336c-70.7 0-128-57.2-128-128 0-70.7 57.2-128 128-128 70.7 0 128 57.2 128 128 0 70.7-57.2 128-128 128z"></path></svg>
+								<svg class="svg-inline--fa fa-search-plus fa-w-16" onclick="app.editor.zoom_in()" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="search-plus" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg=""><path fill="currentColor" d="M304 192v32c0 6.6-5.4 12-12 12h-56v56c0 6.6-5.4 12-12 12h-32c-6.6 0-12-5.4-12-12v-56h-56c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h56v-56c0-6.6 5.4-12 12-12h32c6.6 0 12 5.4 12 12v56h56c6.6 0 12 5.4 12 12zm201 284.7L476.7 505c-9.4 9.4-24.6 9.4-33.9 0L343 405.3c-4.5-4.5-7-10.6-7-17V372c-35.3 27.6-79.7 44-128 44C93.1 416 0 322.9 0 208S93.1 0 208 0s208 93.1 208 208c0 48.3-16.4 92.7-44 128h16.3c6.4 0 12.5 2.5 17 7l99.7 99.7c9.3 9.4 9.3 24.6 0 34zM344 208c0-75.2-60.8-136-136-136S72 132.8 72 208s60.8 136 136 136 136-60.8 136-136z"></path></svg>
+							</div>
+						</div>
+					</div>
+				</div>
+			</b-card>
+
+			<br>
+
+			<b-card>
+				<h3 slot="header">
+					<div style="display:flex; justify-content: space-between">
+					<div>Visualization Element Relationship</div>
+					<div><b-button pill variant="primary" v-on:click="applyTask($event)">Apply Task</b-button></div>
+				</h3>
+				<p>
+					<div v-html="doVisTok"></div>
+				</p>
+			</b-card>
+
+			<br>
+
+		</b-container>
+	</div>
+
+	<!-- These MUST be in the right order. Note no leading / -->
+
+	<!-- REQUIRED: Socket.IO is loaded only once for all instances. Without this, you don't get a websocket connection -->
+	<script src="../uibuilder/vendor/socket.io/socket.io.js"></script>
+
+	<!-- Vendor Libraries - Load in the right order, use minified, production versions for speed -->
+	<script src="../uibuilder/vendor/vue/dist/vue.js"></script> <!-- dev version with component compiler -->
+	<!-- <script src="../uibuilder/vendor/vue/dist/vue.min.js"></script>   prod version with component compiler -->
+	<!-- <script src="../uibuilder/vendor/vue/dist/vue.runtime.min.js"></script>   prod version without component compiler -->
+	<script src="../uibuilder/vendor/bootstrap-vue/dist/bootstrap-vue.js"></script> <!-- Dev version -->
+	<!-- <script src="../uibuilder/vendor/bootstrap-vue/dist/bootstrap-vue.min.js"></script>   Prod version -->
+
+	<!-- REQUIRED: Sets up Socket listeners and the msg object -->
+	<script src="./uibuilderfe.js"></script> <!-- dev version -->
+	<!-- <script src="./uibuilderfe.min.js"></script>	 prod version -->
+
+	<!-- OPTIONAL: You probably want this. Put your custom code here -->
+	<script src="/js/moment.min.js"></script>
+	<script src="./discovery.js"></script>
+
+</body></html>
