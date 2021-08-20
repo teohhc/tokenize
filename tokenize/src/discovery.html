@@ -23,6 +23,9 @@
 	<script type="text/javascript" src="/js/drawflow.js"></script>
 	-->
 	<script type="text/javascript" src="/js/drawflow.min.js"></script>
+	<script type="text/javascript" src="/js/svg-pan-zoom.js"></script>
+	<script type="text/javascript" src="/js/hammer.min.js"></script>
+	<script src="https://unpkg.com/@hpcc-js/wasm/dist/index.min.js" type="application/javascript/"></script>
 
 </head>
 <body>
@@ -174,6 +177,18 @@
 
 			<br>
 
+			<b-card>
+				<h3 slot="header">
+					<div style="display:flex; justify-content: space-between">
+					<div>Visualization Data Transformation</div>
+				</h3>
+				<p>
+					<div v-html="doVisTokER"></div>
+				</p>
+			</b-card>
+
+			<br>
+
 		</b-container>
 	</div>
 
@@ -189,8 +204,10 @@
 	<script src="../uibuilder/vendor/bootstrap-vue/dist/bootstrap-vue.js"></script> <!-- Dev version -->
 	<!-- <script src="../uibuilder/vendor/bootstrap-vue/dist/bootstrap-vue.min.js"></script>   Prod version -->
 
+
 	<!-- REQUIRED: Sets up Socket listeners and the msg object -->
 	<script src="./uibuilderfe.js"></script> <!-- dev version -->
+
 	<!-- <script src="./uibuilderfe.min.js"></script>	 prod version -->
 
 	<!-- OPTIONAL: You probably want this. Put your custom code here -->
