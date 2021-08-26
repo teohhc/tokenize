@@ -46,3 +46,8 @@ Apply the selected task and visualize the outcome.
 ![image](https://user-images.githubusercontent.com/7022124/130884892-d1632c4a-8672-46a4-9178-57a9485bb149.png)
 
 ![image](https://user-images.githubusercontent.com/7022124/130884931-44cc7760-fab2-407c-bd46-86937466a00c.png)
+
+Token standardization.
+![image](https://user-images.githubusercontent.com/7022124/130885627-bb25afa9-ab65-4e3a-a70b-79f2421ae055.png)
+![image](https://user-images.githubusercontent.com/7022124/130885732-edf25a14-b793-441b-b128-b09e729fd925.png)
+
