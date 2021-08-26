@@ -28,19 +28,21 @@ Express the parsing logic in JSONLogic.
 
 ![image](https://user-images.githubusercontent.com/7022124/128825733-089a31ef-9134-4b65-b546-60c8b0612a1c.png)
 
-Discover the scraped data.
-![image](https://user-images.githubusercontent.com/7022124/128825860-4c8d8266-74e5-4fa1-bf42-d75fd7e58a2c.png)
+Token Discovery on the scraped data.
+![image](https://user-images.githubusercontent.com/7022124/130884374-573a6d32-7aab-40e3-a65b-49c056dc51c3.png)
 
-![image](https://user-images.githubusercontent.com/7022124/128827183-ada71727-722f-4a7d-942a-56be7ffccc8f.png)
+![image](https://user-images.githubusercontent.com/7022124/130884437-219decc8-37b3-4dcd-ac07-3b7885ddfadc.png)
+
 
 Select the flow and task to apply.
-![image](https://user-images.githubusercontent.com/7022124/128827277-26c9231b-c7e0-43dc-9e8b-9df1ef6852e4.png)
+![image](https://user-images.githubusercontent.com/7022124/130884554-e6225f6e-0a7d-40e2-8698-d7289f845549.png)
 
-![image](https://user-images.githubusercontent.com/7022124/128827562-6210c79c-5516-4804-b3c1-c69bae40629e.png)
+![image](https://user-images.githubusercontent.com/7022124/130884641-50a91177-b67c-4be9-bda9-6a1a6351e71f.png)
 
-![image](https://user-images.githubusercontent.com/7022124/128827642-c436f566-1b63-4eb5-9a59-58bdc0d2caa6.png)
+![image](https://user-images.githubusercontent.com/7022124/130884683-da517706-c33a-462d-b8bc-9c2083a5ac29.png)
+
 
 Apply the selected task and visualize the outcome.
-![image](https://user-images.githubusercontent.com/7022124/128827778-167b3131-6b6d-4b20-945c-0130b861bbfa.png)
+![image](https://user-images.githubusercontent.com/7022124/130884892-d1632c4a-8672-46a4-9178-57a9485bb149.png)
 
-
+![image](https://user-images.githubusercontent.com/7022124/130884931-44cc7760-fab2-407c-bd46-86937466a00c.png)
