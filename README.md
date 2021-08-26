@@ -30,8 +30,15 @@ Express the parsing logic in JSONLogic.
 
 Token Discovery on the scraped data.
 ![image](https://user-images.githubusercontent.com/7022124/130884374-573a6d32-7aab-40e3-a65b-49c056dc51c3.png)
-
 ![image](https://user-images.githubusercontent.com/7022124/130884437-219decc8-37b3-4dcd-ac07-3b7885ddfadc.png)
+
+![image](https://user-images.githubusercontent.com/7022124/130886260-da98ed6c-3fdd-4cd1-932d-d245a2da4558.png)
+![image](https://user-images.githubusercontent.com/7022124/130886332-511b5290-3641-4d7b-b790-4c68e8e6fea2.png)
+![image](https://user-images.githubusercontent.com/7022124/130886381-bface054-57a4-4df5-bf8d-e9d5bcc02f14.png)
+
+![image](https://user-images.githubusercontent.com/7022124/130886425-03058bb8-4e22-4cdb-8311-2d959e6d9615.png)
+![image](https://user-images.githubusercontent.com/7022124/130886477-a9ef44e8-c560-4196-afe9-5a4172aec443.png)
+![image](https://user-images.githubusercontent.com/7022124/130886517-1cd4768e-5fbc-4c7e-8d18-196de41a09d1.png)
 
 
 Select the flow and task to apply.
